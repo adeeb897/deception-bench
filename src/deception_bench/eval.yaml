@@ -1,0 +1,13 @@
+title: "DeceptionBench: Deceptive Behaviour of LLMs in Real-World Scenarios"
+description: |
+  150 scenarios across five domains (economy, education, healthcare, social,
+  entertainment), each prompted under self/other roles and pressure/reward
+  inducements. An LLM judge labels the model's thought and response as honest
+  or deceptive.
+group: Safeguards # pick the group used by the inspect_evals listing for this benchmark
+contributors:
+  - Generality-Labs
+version: "1-A"
+tasks:
+  - name: deception_bench
+    dataset_samples: 900
