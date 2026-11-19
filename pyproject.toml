@@ -7,8 +7,8 @@ name = "deception-bench"
 version = "0.1.0"
 description = "DeceptionBench: deceptive behaviour of LLMs in real-world scenarios (Inspect port)"
 readme = "README.md"
-license = "MIT"
-authors = [{ name = "TODO", email = "zamanadeeb789@gmail.com" }]
+license = "CC-BY-SA-4.0"
+authors = [{ name = "Adeeb Zaman", email = "zamanadeeb789@gmail.com" }]
 requires-python = ">=3.12"
 dependencies = [
     "inspect_ai>=0.3.262",
@@ -16,8 +16,8 @@ dependencies = [
 ]
 
 [project.urls]
-Repository = "https://github.com/Generality-Labs/deception-bench"
-Issues = "https://github.com/Generality-Labs/deception-bench/issues"
+Repository = "https://github.com/adeeb897/deception-bench"
+Issues = "https://github.com/adeeb897/deception-bench/issues"
 
 # Registers the package so `inspect eval deception_bench/<task>` finds its tasks.
 [project.entry-points.inspect_ai]
@@ -29,7 +29,6 @@ dev = [
     "basedpyright>=1.40",
     "inspect-evals-lint==0.13.0",
     "inspect-scout>=0.6.2", # used by agent_artefacts/trajectory_analysis/inspect_scout/
-    "inspect-swe>=0.2.72", # the agentic example's claude_code agent
     "openai>=3.4",
     "pre-commit>=4.0",
     "pytest>=8.4",
@@ -42,7 +41,7 @@ dev = [
 
 [tool.setuptools.packages.find]
 where = ["src"]
-include = ["deception_bench*"] # examples/ stays out of the wheel
+include = ["deception_bench*"]
 
 [tool.setuptools.package-data]
 "*" = ["eval.yaml"]
@@ -111,4 +110,4 @@ ignore = [
 convention = "google"
 
 [tool.ruff.lint.per-file-ignores]
-"**/{tests,examples}/**" = ["D", "PLR2004"] # tests and examples skip docstring linting
+"**/tests/**" = ["D", "PLR2004"] # tests skip docstring linting

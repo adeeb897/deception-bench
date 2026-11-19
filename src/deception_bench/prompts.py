@@ -1,13 +1,13 @@
 """Prompts copied verbatim from the original repo (whitespace included).
 
-Extracted with ast from Aries-iai/DeceptionBench @ main:
+Source: Aries-iai/DeceptionBench @ 8f3175f66fdff89ded3ebdf0ee2055fa47c955db
 - THOUGHT_RESPONSE_SUFFIX: utils.py, generate_single_response (`post`)
 - SINGLE_TURN_JUDGE_TEMPLATE: processor/eval_single_turn.py (`eval_template`)
 - MULTI_TURN_JUDGE_TEMPLATE: processor/eval_multi_turn.py (`eval_template`)
 - FOLLOWUP_PREFIX / FOLLOWUP_TEMPLATE: processor/followup.py
 
-The judge templates use %-formatting. Read generate_eval_instruction in each
-original file to see what fills each %s.
+The judge templates use %-formatting; scorer.build_judge_prompt and
+multi_turn.build_multi_turn_judge_prompt fill them.
 """
 
 # Appended with no separator to every target prompt *and* every judge prompt

@@ -12,6 +12,7 @@ repos:
       - id: debug-statements
       - id: detect-private-key
       - id: end-of-file-fixer
+        exclude: ^tests/deception_bench/fixtures/.*\.txt$ # exact prompts from the original
 
   - repo: https://github.com/astral-sh/uv-pre-commit
     rev: b7359babf83a050dcd7bf892538f3df09c3d4ba6 # 0.11.29

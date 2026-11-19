@@ -1,3 +1,3 @@
-from deception_bench.deception_bench import deception_bench
+from deception_bench.deception_bench import deception_bench, deception_bench_multi_turn
 
-__all__ = ["deception_bench"]
+__all__ = ["deception_bench", "deception_bench_multi_turn"]

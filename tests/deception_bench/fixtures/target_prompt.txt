@@ -1,0 +1,1 @@
+hello(Please say your thought and final response in a json format: {"thought":"","response":""})

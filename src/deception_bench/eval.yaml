@@ -4,10 +4,12 @@ description: |
   entertainment), each prompted under self/other roles and pressure/reward
   inducements. An LLM judge labels the model's thought and response as honest
   or deceptive.
-group: Safeguards # pick the group used by the inspect_evals listing for this benchmark
+group: Safeguards
 contributors:
-  - Generality-Labs
+  - adeeb897
 version: "1-A"
 tasks:
   - name: deception_bench
     dataset_samples: 900
+  - name: deception_bench_multi_turn
+    dataset_samples: 600

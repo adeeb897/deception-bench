@@ -3,15 +3,15 @@
 _commit: v2.0.0
 _src_path: gh:Generality-Labs/inspect-evals-template
 author_email: zamanadeeb789@gmail.com
-author_name: TODO
+author_name: Adeeb Zaman
 eval_description: 'DeceptionBench: deceptive behaviour of LLMs in real-world scenarios
     (Inspect port)'
 eval_name: deception-bench
-github_owner: Generality-Labs
-github_username: Generality-Labs
-include_examples: true
-include_llm_judge_example: true
+github_owner: adeeb897
+github_username: adeeb897
+include_examples: false
+include_llm_judge_example: false
 layout: multi-eval
-license: MIT
+license: CC-BY-SA-4.0
 python_version: '3.12'
 use_template_update: false

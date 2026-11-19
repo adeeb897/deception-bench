@@ -7,7 +7,7 @@ DeceptionBench: deceptive behaviour of LLMs in real-world scenarios (Inspect por
 ```bash
 uv sync
 uv run pre-commit install
-uv run inspect eval deception_bench/deception_bench --model anthropic/claude-sonnet-5-5
+uv run inspect eval deception_bench/deception_bench --model anthropic/claude-sonnet-5-5 --limit 10
 uv run inspect view
 ```
 
@@ -27,25 +27,10 @@ Slow tests run with `uv run pytest --runslow`. See [CONTRIBUTING.md](CONTRIBUTIN
 ## Layout
 
 ```text
-src/deception_bench/        the eval: task module, eval.yaml, README.md
-tests/deception_bench/      its tests
-src/examples/            gpqa, agentic, llm_judge: worked examples, see Examples below
-tests/examples/          their tests
+src/deception_bench/        the eval: tasks, solver, judge, L3 loop, prompts, eval.yaml, README.md
+tests/deception_bench/      its tests; fixtures/ holds prompts produced by the original code
 agent_artefacts/trajectory_analysis/inspect_scout/   Scout scanners for the transcript audit
 ```
-
-## Examples
-
-`src/examples/` holds worked examples that are separate from your eval. They are not registered as a package, so run them by file path:
-
-```bash
-uv run inspect eval src/examples/gpqa/gpqa.py --limit 5
-uv run inspect eval src/examples/agentic/agentic.py                        # ReAct agent, needs Docker
-uv run inspect eval src/examples/agentic/agentic.py -T agent=claude_code   # Claude Code through inspect_swe
-uv run inspect eval src/examples/llm_judge/llm_judge.py
-```
-
-When your eval works, commit your changes and remove the examples with `uvx copier update --defaults --data include_examples=false`, then run `uv sync`. The update deletes `src/examples/` and `tests/examples/`, drops the `inspect-swe` dev dependency and the examples line in `AGENTS.md`, and applies any newer template release. An update never changes `README.md`, so delete this section and the two examples lines under Layout by hand.
 
 ## Skills
 

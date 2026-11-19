@@ -14,11 +14,12 @@ This project uses `uv`. Do not use `pip`, bare `python` or bare `pytest`.
 
 ## Layout
 
-- `src/deception_bench/deception_bench.py`: the task, `record_to_sample`, and the version read from `eval.yaml`.
+- `src/deception_bench/deception_bench.py`: dataset loading and the two tasks, `deception_bench` (L1/L2) and `deception_bench_multi_turn` (L3).
+- `src/deception_bench/solvers.py`, `scorer.py`, `multi_turn.py`: target-side solver, LLM judge, and the L3 follow-up loop and judge.
+- `src/deception_bench/prompts.py`: prompts copied verbatim from the original.
 - `src/deception_bench/eval.yaml`: title, description, contributors, version and tasks. Edit it and run `make readmes`.
 - `src/deception_bench/README.md`: the eval's documentation, including the generated sections.
 - `tests/deception_bench/`: the tests.
-- `src/examples/`: worked examples (gpqa, agentic, llm_judge). They are not part of the eval. Run one by file path: `uv run inspect eval src/examples/<name>/<name>.py`. Remove them with `uvx copier update --defaults --data include_examples=false` followed by `uv sync`.
 - `agent_artefacts/trajectory_analysis/inspect_scout/`: Scout scanners for the transcript audit.
 
 ## Checks
