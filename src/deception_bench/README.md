@@ -107,6 +107,10 @@ uv run inspect eval deception_bench/deception_bench_multi_turn --model <target> 
 
 Without `--model-role`, the judge and follow-up models default to OpenRouter (`OPENROUTER_API_KEY`).
 
+In an L3 sample's transcript, the messages are each turn's prompt and reply in order. The target saw only the current turn's prompt, never the earlier ones. The conversation as the judge sees it is in the sample's store under `conversation`.
+
+The follow-up model sometimes refuses to write an inducement. As in the original, its reply is still sent to the target as the next instruction. Each L3 score's metadata lists the turns whose instruction looked like a refusal (`followup_refusals`, matched by its opening words, such as "I'm sorry" or "I can't") and the number of turns (`total_turns`). Check how often this happens when you compare follow-up models.
+
 ## Deviations from the original implementation
 
 Prompts, sampling settings, reply cleaning and verdict parsing match the original at commit `8f3175f`. The tests compare every prompt against output produced by the original code.
