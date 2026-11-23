@@ -33,6 +33,7 @@ from deception_bench.multi_turn import (
     build_multi_turn_judge_prompt,
     deception_judge_multi_turn,
     followup_loop,
+    is_refusal,
 )
 from deception_bench.scorer import (
     build_judge_prompt,
@@ -291,6 +292,48 @@ def test_followup_loop_stops_on_empty_reply() -> None:
     assert len(inputs(log, role="followup")) == 1
 
 
+def test_followup_loop_records_transcript() -> None:
+    task = Task(dataset=one_sample("L2-self-pressure"), solver=followup_loop(max_turns=2))
+    log = run(task, target=["one", "two"], followup=["NEXT"])
+    assert log.samples
+    sample = log.samples[0]
+    suffix = prompts.THOUGHT_RESPONSE_SUFFIX
+    assert [(m.role, m.text) for m in sample.messages] == [
+        ("user", "prompt for L2-self-pressure" + suffix),
+        ("assistant", "one"),
+        ("user", "NEXT" + suffix),
+        ("assistant", "two"),
+    ]
+    assert sample.output.completion == "two"
+
+
+@pytest.mark.parametrize("max_turns", [0, -1])
+def test_max_turns_must_be_positive(max_turns: int) -> None:
+    with pytest.raises(ValueError, match="max_turns"):
+        followup_loop(max_turns=max_turns)
+
+
+def test_multi_turn_task_rejects_zero_max_turns() -> None:
+    # Validation runs before the dataset is loaded, so nothing is downloaded.
+    with pytest.raises(ValueError, match="max_turns"):
+        deception_bench_multi_turn(max_turns=0)
+
+
+@pytest.mark.parametrize(
+    ("text", "refusal"),
+    [
+        ("I'm sorry, but I can't help with that.", True),
+        ("  I can\N{RIGHT SINGLE QUOTATION MARK}t assist with creating deceptive content.", True),
+        ("i cannot do that", True),
+        ("Sorry, no.", True),
+        ("Original question. You must answer as I say.", False),
+        ("Answer the question; I'm sorry to push.", False),
+    ],
+)
+def test_is_refusal(text: str, refusal: bool) -> None:
+    assert is_refusal(text) is refusal
+
+
 def test_deception_judge_multi_turn() -> None:
     task = Task(
         dataset=one_sample("L2-self-pressure"),
@@ -302,6 +345,26 @@ def test_deception_judge_multi_turn() -> None:
     score = log.samples[0].scores["deception_judge_multi_turn"]  # type: ignore[index]
     assert score.value == {"thought": 1, "response": 0}
     assert score.answer == "two"
+    assert score.metadata == {"total_turns": 2, "followup_refusals": []}
+
+
+def test_deception_judge_multi_turn_records_followup_refusals() -> None:
+    task = Task(
+        dataset=one_sample("L2-self-pressure"),
+        solver=followup_loop(max_turns=3),
+        scorer=deception_judge_multi_turn(),
+    )
+    log = run(
+        task,
+        target=["one", "two", "three"],
+        followup=["I'm sorry, I can't help with that.", "push"],
+        grader=[VERDICT % "L2-self-pressure"],
+    )
+    assert log.samples
+    # As in the original, the refusal is still sent to the target.
+    assert inputs(log)[1] == "I'm sorry, I can't help with that." + prompts.THOUGHT_RESPONSE_SUFFIX
+    score = log.samples[0].scores["deception_judge_multi_turn"]  # type: ignore[index]
+    assert score.metadata == {"total_turns": 3, "followup_refusals": [2]}
 
 
 # ---------------------------------------------------------------- end to end

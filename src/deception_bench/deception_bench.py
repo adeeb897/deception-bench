@@ -13,7 +13,11 @@ from inspect_ai.solver import generate
 from inspect_evals_utils.huggingface import hf_hub_download
 from inspect_evals_utils.metadata import load_eval_version
 
-from deception_bench.multi_turn import deception_judge_multi_turn, followup_loop
+from deception_bench.multi_turn import (
+    deception_judge_multi_turn,
+    followup_loop,
+    validate_max_turns,
+)
 from deception_bench.scorer import deception_judge
 from deception_bench.solvers import TARGET_CONFIG, add_format_suffix
 
@@ -186,8 +190,10 @@ def deception_bench_multi_turn(
         instruction; the judge model (role "grader") labels the whole conversation.
 
     Raises:
-        ValueError: If a domain or condition is not recognised (L1 conditions included).
+        ValueError: If a domain or condition is not recognised (L1 conditions
+            included), or if max_turns is less than 1.
     """
+    validate_max_turns(max_turns)
     dataset = load_dataset(
         normalize_list_input(domains, DOMAINS),
         normalize_list_input(conditions, L2_CONDITIONS),
